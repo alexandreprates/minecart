@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="theme-color" content="#f5f0e8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Minecart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <div class="hero-title">Minecart</div>
+        <p class="hero-subtitle">Calculadora de cristais para o jogo Quartz!</p>
+        <div class="hero-badges">
+          <span class="badge">Calculadora de Cristais</span>
+          <span class="badge">Combos automáticos</span>
+          <span class="badge">Faturamento diário</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="panel" id="quantidades">
+          <div class="panel-header">
+            <h2>Quantidades</h2>
+            <p>Informe o que vai vender hoje.</p>
+          </div>
+          <div class="crystal-list" id="crystal-list"></div>
+          <div class="controls">
+            <button class="btn ghost" id="reset-btn" type="button">Zerar</button>
+          </div>
+          <div class="hint" id="autunita-note"></div>
+        </section>
+
+        <section class="panel" id="combos">
+          <div class="panel-header">
+            <h2>Combos</h2>
+            <p>Escolha manualmente ou use o melhor combo automático.</p>
+          </div>
+          <div class="combo-auto">
+            <span class="label">Melhor combo (auto)</span>
+            <strong id="best-combo">Nenhum combo</strong>
+          </div>
+          <div class="combo-select">
+            <label for="combo-select">Aplicar combo</label>
+            <select id="combo-select"></select>
+            <div class="hint" id="combo-note"></div>
+          </div>
+        </section>
+
+        <section class="panel" id="resultado">
+          <div class="panel-header">
+            <h2>Resultado</h2>
+            <p>Compare o total base com o total combinado.</p>
+          </div>
+          <div class="result-grid">
+            <div class="result-card">
+              <span>Total base</span>
+              <strong id="base-total">0</strong>
+            </div>
+            <div class="result-card accent">
+              <span>Total com combo</span>
+              <strong id="combo-total">0</strong>
+            </div>
+          </div>
+          <div class="daily-actions">
+            <button class="btn" id="save-day-btn" type="button">Salvar faturamento do dia</button>
+          </div>
+          <div class="daily-list" id="daily-list"></div>
+          <div class="summary-box is-hidden" id="summary-box">
+            <h3>Resumo do jogo</h3>
+            <div id="summary-body"></div>
+          </div>
+        </section>
+
+        <section class="panel" id="detalhes">
+          <div class="panel-header">
+            <h2>Detalhes</h2>
+            <p>Veja como o total foi calculado.</p>
+          </div>
+          <div class="table-wrap">
+            <table class="detail-table">
+              <thead>
+                <tr>
+                  <th>Cristal</th>
+                  <th>Qtd</th>
+                  <th>Unitário</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody id="detail-body"></tbody>
+            </table>
+          </div>
+          <div class="combo-detail" id="combo-detail"></div>
+        </section>
+      </main>
+
+      <footer class="legal">
+        <small>
+          Quartz é um jogo de tabuleiro de Sergio Halaban &amp; André Zatz, © 2016 Passport Game Studios. “Quartz”,
+          “Passport Game Studios” e seus logotipos são marcas comerciais (trademarks) de seus respectivos titulares.
+          Esta calculadora é um projeto independente, não oficial e não afiliado, nem endossado pelo(s) detentor(es)
+          dos direitos. Nenhuma arte, layout, texto do manual ou material oficial do jogo é reproduzido aqui. Para
+          solicitações de remoção/contato: <strong>me@alexandreprates.dev</strong>.
+        </small>
+      </footer>
+    </div>
+
+    <noscript>Ative o JavaScript para usar a calculadora.</noscript>
+    <script src="app.js"></script>
+  </body>
+</html>
