@@ -417,6 +417,20 @@ main {
     #0f1727;
 }
 
+.daily-bonus {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(148px, 220px);
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(79, 46, 30, 0.14), rgba(47, 224, 195, 0.08)),
+    rgba(15, 23, 35, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 .daily-actions {
   margin-top: 16px;
 }
@@ -439,6 +453,68 @@ main {
   font-weight: 700;
   color: #f8e5c8;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+}
+
+.daily-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.daily-breakdown {
+  border-radius: 10px;
+  background: rgba(10, 15, 23, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.daily-breakdown summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 42px;
+  padding: 8px 10px;
+}
+
+.daily-breakdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.daily-breakdown summary::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+}
+
+.daily-breakdown[open] summary::before {
+  transform: rotate(225deg);
+}
+
+.daily-breakdown-body {
+  display: grid;
+  gap: 8px;
+  padding: 0 12px 12px;
+}
+
+.daily-breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink);
+  font: 600 0.92rem/1.2 "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+}
+
+.daily-breakdown-row.total {
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .daily-delete {
@@ -641,6 +717,10 @@ main {
   }
 
   .result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-bonus {
     grid-template-columns: 1fr;
   }
 

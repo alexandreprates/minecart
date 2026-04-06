@@ -12,7 +12,7 @@ const STORAGE_KEY = "quartz-calculator-v1";
 const state = loadState();
 const inputMap = new Map();
 let deferredInstallPrompt = null;
-const elements = {
+  const elements = {
   list: document.getElementById("crystal-list"),
   bestCombo: document.getElementById("best-combo"),
   comboSelect: document.getElementById("combo-select"),
@@ -30,6 +30,9 @@ const elements = {
   summaryBaseTotal: document.getElementById("summary-base-total"),
   summaryComboTotal: document.getElementById("summary-combo-total"),
   summaryDaysCount: document.getElementById("summary-days-count"),
+  dayBonusInput: document.getElementById("day-bonus-input"),
+  dayBonusMinus: document.getElementById("day-bonus-minus"),
+  dayBonusPlus: document.getElementById("day-bonus-plus"),
   cardsTotalInput: document.getElementById("cards-total-input"),
   cardsTotalMinus: document.getElementById("cards-total-minus"),
   cardsTotalPlus: document.getElementById("cards-total-plus"),
@@ -62,6 +65,7 @@ function bindActions() {
   const handleReset = () => {
     CRYSTALS.forEach((crystal) => setQuantity(crystal.id, 0));
     setAutunita(0);
+    setDayBonus(0);
     state.selectedComboId = "AUTO";
     updateUI();
   };
@@ -92,11 +96,16 @@ function bindActions() {
     const bestCombo = pickBestCombo(combos);
     const applied = resolveSelectedCombo(combos, bestCombo);
     const day = state.dailyEarnings.length + 1;
+    const quantities = getQuantityMap();
     state.dailyEarnings.push({
       day,
-      total: applied.finalTotal
+      total: applied.finalTotal + state.dayBonus,
+      gemsTotal: applied.finalTotal,
+      dayBonus: state.dayBonus,
+      quantities
     });
     CRYSTALS.forEach((crystal) => setQuantity(crystal.id, 0));
+    setDayBonus(0);
     state.selectedComboId = "AUTO";
     persistState();
     updateUI();
@@ -119,6 +128,21 @@ function bindActions() {
 
   elements.cardsTotalPlus.addEventListener("click", () => {
     setCardsTotal(state.cardsTotal + 1);
+    updateUI();
+  });
+
+  elements.dayBonusInput.addEventListener("input", () => {
+    setDayBonus(parseQuantity(elements.dayBonusInput.value));
+    updateUI();
+  });
+
+  elements.dayBonusMinus.addEventListener("click", () => {
+    setDayBonus(state.dayBonus - 1);
+    updateUI();
+  });
+
+  elements.dayBonusPlus.addEventListener("click", () => {
+    setDayBonus(state.dayBonus + 1);
     updateUI();
   });
 }
@@ -211,6 +235,7 @@ function updateUI() {
   elements.summaryBaseTotal.textContent = formatMoney(totals.baseTotal);
   elements.summaryComboTotal.textContent = formatMoney(selectedCombo.finalTotal);
   elements.summaryDaysCount.textContent = `${state.dailyEarnings.length}/5`;
+  elements.dayBonusInput.value = state.dayBonus;
   if (elements.saveDayBtn) {
     elements.saveDayBtn.disabled = state.dailyEarnings.length >= 5;
   }
@@ -303,8 +328,14 @@ function renderDailyEarnings() {
     const items = state.dailyEarnings
       .map((entry, index) => `
         <div class="daily-item">
-          <span>Dia ${entry.day}</span>
-          <span>${formatMoney(entry.total)}</span>
+          <div class="daily-main">
+            <span>Dia ${entry.day}</span>
+            <span>${formatMoney(entry.total)}</span>
+          </div>
+          <details class="daily-breakdown">
+            <summary aria-label="Ver gemas vendidas"></summary>
+            <div class="daily-breakdown-body">${renderDailyBreakdown(entry)}</div>
+          </details>
           ${index === state.dailyEarnings.length - 1
             ? `<button class="daily-delete" type="button" data-daily-delete="${index}">Excluir</button>`
             : ""}
@@ -345,6 +376,27 @@ function computeTotals() {
     baseTotal += subtotal;
   });
   return { baseTotal, subtotals };
+}
+
+function renderDailyBreakdown(entry) {
+  const quantities = entry.quantities || {};
+  const sold = CRYSTALS
+    .map((crystal) => ({ name: crystal.name, quantity: quantities[crystal.id] || 0 }))
+    .filter((item) => item.quantity > 0);
+  const bonus = Number(entry.dayBonus) || 0;
+  const gemsTotal = Number(entry.gemsTotal ?? entry.total) || 0;
+
+  const soldLines = sold.length
+    ? sold
+    .map((item) => `<div class="daily-breakdown-row"><span>${item.name}</span><strong>${item.quantity}</strong></div>`)
+    .join("")
+    : "<div class=\"hint\">Nenhuma gema registrada.</div>";
+
+  return `
+    ${soldLines}
+    <div class="daily-breakdown-row total"><span>Total em gemas</span><strong>${formatMoney(gemsTotal)}</strong></div>
+    <div class="daily-breakdown-row total"><span>Bônus fim do dia</span><strong>${formatMoney(bonus)}</strong></div>
+  `;
 }
 
 function computeCombos(totals) {
@@ -477,6 +529,13 @@ function setCardsTotal(value) {
   }
 }
 
+function setDayBonus(value) {
+  state.dayBonus = clampDayBonus(value);
+  if (Number(elements.dayBonusInput.value) !== state.dayBonus) {
+    elements.dayBonusInput.value = state.dayBonus;
+  }
+}
+
 function formatMoney(value) {
   return Number(value).toLocaleString("pt-BR");
 }
@@ -484,6 +543,11 @@ function formatMoney(value) {
 function clampQuantity(value) {
   if (!Number.isFinite(value)) return 0;
   return Math.max(0, Math.floor(value));
+}
+
+function clampDayBonus(value) {
+  if (!Number.isFinite(value)) return 0;
+  return Math.min(4, Math.max(0, Math.floor(value)));
 }
 
 function parseQuantity(value) {
@@ -517,6 +581,7 @@ function loadState() {
     autunita: 0,
     selectedComboId: "AUTO",
     dailyEarnings: [],
+    dayBonus: 0,
     cardsTotal: 0
   };
   try {
@@ -527,7 +592,16 @@ function loadState() {
       quantities: parsed.quantities || {},
       autunita: Number(parsed.autunita) || 0,
       selectedComboId: parsed.selectedComboId || "AUTO",
-      dailyEarnings: Array.isArray(parsed.dailyEarnings) ? parsed.dailyEarnings : [],
+      dailyEarnings: Array.isArray(parsed.dailyEarnings)
+        ? parsed.dailyEarnings.map((entry) => ({
+          day: Number(entry.day) || 0,
+          total: Number(entry.total) || 0,
+          gemsTotal: Number(entry.gemsTotal ?? entry.total) || 0,
+          dayBonus: clampDayBonus(Number(entry.dayBonus) || 0),
+          quantities: entry.quantities || {}
+        }))
+        : [],
+      dayBonus: clampDayBonus(Number(parsed.dayBonus) || 0),
       cardsTotal: Number(parsed.cardsTotal) || 0
     };
   } catch (error) {
@@ -541,6 +615,7 @@ function persistState() {
     autunita: state.autunita,
     selectedComboId: state.selectedComboId,
     dailyEarnings: state.dailyEarnings,
+    dayBonus: state.dayBonus,
     cardsTotal: state.cardsTotal
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
