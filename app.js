@@ -11,6 +11,7 @@ const STORAGE_KEY = "quartz-calculator-v1";
 
 const state = loadState();
 const inputMap = new Map();
+let deferredInstallPrompt = null;
 const elements = {
   list: document.getElementById("crystal-list"),
   bestCombo: document.getElementById("best-combo"),
@@ -26,9 +27,16 @@ const elements = {
   dailyList: document.getElementById("daily-list"),
   summaryBox: document.getElementById("summary-box"),
   summaryBody: document.getElementById("summary-body"),
+  summaryBaseTotal: document.getElementById("summary-base-total"),
+  summaryComboTotal: document.getElementById("summary-combo-total"),
+  summaryDaysCount: document.getElementById("summary-days-count"),
   cardsTotalInput: document.getElementById("cards-total-input"),
   cardsTotalMinus: document.getElementById("cards-total-minus"),
-  cardsTotalPlus: document.getElementById("cards-total-plus")
+  cardsTotalPlus: document.getElementById("cards-total-plus"),
+  installBtns: Array.from(document.querySelectorAll(".install-btn")),
+  mobileResetBtn: document.getElementById("mobile-reset-btn"),
+  mobileSaveDayBtn: document.getElementById("mobile-save-day-btn"),
+  sectionButtons: Array.from(document.querySelectorAll("[data-section-target]"))
 };
 
 init();
@@ -36,6 +44,8 @@ init();
 function init() {
   renderInputs();
   bindActions();
+  registerPwa();
+  bindSectionNav();
   updateUI();
 }
 
@@ -49,12 +59,15 @@ function renderInputs() {
 }
 
 function bindActions() {
-  elements.resetBtn.addEventListener("click", () => {
+  const handleReset = () => {
     CRYSTALS.forEach((crystal) => setQuantity(crystal.id, 0));
     setAutunita(0);
     state.selectedComboId = "AUTO";
     updateUI();
-  });
+  };
+
+  elements.resetBtn.addEventListener("click", handleReset);
+  elements.mobileResetBtn.addEventListener("click", handleReset);
 
   elements.comboSelect.addEventListener("change", (event) => {
     state.selectedComboId = event.target.value;
@@ -72,7 +85,7 @@ function bindActions() {
     updateUI();
   });
 
-  elements.saveDayBtn.addEventListener("click", () => {
+  const handleSaveDay = () => {
     if (state.dailyEarnings.length >= 5) return;
     const totals = computeTotals();
     const combos = computeCombos(totals);
@@ -87,7 +100,12 @@ function bindActions() {
     state.selectedComboId = "AUTO";
     persistState();
     updateUI();
-  });
+  };
+
+  if (elements.saveDayBtn) {
+    elements.saveDayBtn.addEventListener("click", handleSaveDay);
+  }
+  elements.mobileSaveDayBtn.addEventListener("click", handleSaveDay);
 
   elements.cardsTotalInput.addEventListener("input", () => {
     setCardsTotal(parseQuantity(elements.cardsTotalInput.value));
@@ -103,7 +121,6 @@ function bindActions() {
     setCardsTotal(state.cardsTotal + 1);
     updateUI();
   });
-
 }
 
 function createCrystalRow(crystal, isAutunita) {
@@ -191,7 +208,13 @@ function updateUI() {
   elements.bestCombo.textContent = `${bestCombo.description} (${formatMoney(bestCombo.finalTotal)})`;
   elements.baseTotal.textContent = formatMoney(totals.baseTotal);
   elements.comboTotal.textContent = formatMoney(selectedCombo.finalTotal);
-  elements.saveDayBtn.disabled = state.dailyEarnings.length >= 5;
+  elements.summaryBaseTotal.textContent = formatMoney(totals.baseTotal);
+  elements.summaryComboTotal.textContent = formatMoney(selectedCombo.finalTotal);
+  elements.summaryDaysCount.textContent = `${state.dailyEarnings.length}/5`;
+  if (elements.saveDayBtn) {
+    elements.saveDayBtn.disabled = state.dailyEarnings.length >= 5;
+  }
+  elements.mobileSaveDayBtn.disabled = state.dailyEarnings.length >= 5;
 
   renderComboSelect(combos, bestCombo);
   renderDetails(totals, selectedCombo);
@@ -282,7 +305,9 @@ function renderDailyEarnings() {
         <div class="daily-item">
           <span>Dia ${entry.day}</span>
           <span>${formatMoney(entry.total)}</span>
-          <button class="daily-delete" type="button" data-daily-delete="${index}">Excluir</button>
+          ${index === state.dailyEarnings.length - 1
+            ? `<button class="daily-delete" type="button" data-daily-delete="${index}">Excluir</button>`
+            : ""}
         </div>
       `)
       .join("");
@@ -519,4 +544,81 @@ function persistState() {
     cardsTotal: state.cardsTotal
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+}
+
+function registerPwa() {
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    toggleInstallButtons(true);
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    toggleInstallButtons(false);
+  });
+
+  elements.installBtns.forEach((button) => {
+    button.addEventListener("click", async () => {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      toggleInstallButtons(false);
+    });
+  });
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    });
+  }
+}
+
+function toggleInstallButtons(visible) {
+  elements.installBtns.forEach((button) => {
+    button.classList.toggle("is-hidden", !visible);
+  });
+}
+
+function bindSectionNav() {
+  elements.sectionButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const sectionId = button.dataset.sectionTarget;
+      const section = document.getElementById(sectionId);
+      if (!section) return;
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      setActiveSection(sectionId);
+    });
+  });
+
+  const sections = ["quantidades", "combos", "resultado", "detalhes"]
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+
+  if (!sections.length || !("IntersectionObserver" in window)) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visibleEntry = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (visibleEntry?.target?.id) {
+        setActiveSection(visibleEntry.target.id);
+      }
+    },
+    {
+      rootMargin: "-18% 0px -48% 0px",
+      threshold: [0.2, 0.35, 0.6]
+    }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+}
+
+function setActiveSection(sectionId) {
+  elements.sectionButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.sectionTarget === sectionId);
+  });
 }

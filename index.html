@@ -6,23 +6,47 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="#f5f0e8" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>Minecart</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Minecart Quartz Companion" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Minecart Quartz Companion</title>
+    <link rel="manifest" href="manifest.webmanifest?v=3" />
+    <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/icon-192.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=3" />
   </head>
   <body>
     <div class="page">
-      <header class="hero">
-        <div class="hero-title">Minecart</div>
-        <p class="hero-subtitle">Calculadora de cristais para o jogo Quartz!</p>
-        <div class="hero-badges">
-          <span class="badge">Calculadora de Cristais</span>
-          <span class="badge">Combos automáticos</span>
-          <span class="badge">Faturamento diário</span>
+      <div class="app-topbar">
+        <div class="app-topbar-copy">
+          <span class="app-kicker">Webapp mobile</span>
+          <strong>Minecart Quartz Companion</strong>
         </div>
+        <button class="btn ghost install-btn is-hidden" id="install-btn" type="button">Instalar app</button>
+      </div>
+
+      <header class="hero">
+        <div class="hero-title">Minecart Quartz Companion</div>
+        <p class="hero-subtitle">Calculadora de cristais para o jogo Quartz!</p>
       </header>
+
+      <section class="app-summary" aria-label="Resumo rápido">
+        <div class="summary-pill">
+          <span>Base</span>
+          <strong id="summary-base-total">0</strong>
+        </div>
+        <div class="summary-pill accent">
+          <span>Combo</span>
+          <strong id="summary-combo-total">0</strong>
+        </div>
+        <div class="summary-pill">
+          <span>Dias salvos</span>
+          <strong id="summary-days-count">0/5</strong>
+        </div>
+      </section>
 
       <main>
         <section class="panel" id="quantidades">
@@ -67,9 +91,6 @@
               <span>Total com combo</span>
               <strong id="combo-total">0</strong>
             </div>
-          </div>
-          <div class="daily-actions">
-            <button class="btn" id="save-day-btn" type="button">Salvar faturamento do dia</button>
           </div>
           <div class="daily-list" id="daily-list"></div>
           <div class="summary-box is-hidden" id="summary-box">
@@ -123,7 +144,17 @@
       </footer>
     </div>
 
+    <div class="mobile-action-bar">
+      <button class="nav-chip is-active" data-section-target="quantidades" type="button">Quantidades</button>
+      <button class="nav-chip" data-section-target="combos" type="button">Combos</button>
+      <button class="nav-chip" data-section-target="resultado" type="button">Resultado</button>
+      <button class="nav-chip" data-section-target="detalhes" type="button">Detalhes</button>
+      <button class="btn ghost" id="mobile-reset-btn" type="button">Zerar</button>
+      <button class="btn" id="mobile-save-day-btn" type="button">Salvar dia</button>
+      <button class="btn ghost install-btn is-hidden" id="mobile-install-btn" type="button">Instalar</button>
+    </div>
+
     <noscript>Ative o JavaScript para usar a calculadora.</noscript>
-    <script src="app.js"></script>
+    <script src="app.js?v=3"></script>
   </body>
 </html>

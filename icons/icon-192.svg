@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="Minecart nordico">
+  <defs>
+    <linearGradient id="bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#f7f3ed" />
+      <stop offset="100%" stop-color="#e9e0d4" />
+    </linearGradient>
+    <linearGradient id="wood" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#c8946d" />
+      <stop offset="100%" stop-color="#986547" />
+    </linearGradient>
+    <linearGradient id="metal" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8f5ef" />
+      <stop offset="100%" stop-color="#cdc4bb" />
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="40" fill="url(#bg)" />
+  <g fill="none" stroke="#232327" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M26 153h140" stroke-width="6" />
+    <path d="M30 58h107" stroke-width="8" />
+    <path d="M78 49h34v10H78z" fill="#9d6b4f" stroke-width="8" />
+    <path d="M136 58h26l-4 18h-27z" fill="#8a847d" stroke-width="8" />
+    <path d="M31 58l4 18h101l4-18z" fill="url(#metal)" stroke-width="8" />
+
+    <path d="M39 76h80v52H46z" fill="url(#wood)" stroke-width="7" />
+    <path d="M119 76h26v52h-26z" fill="#8c6046" stroke-width="7" />
+    <path d="M43 89c14-5 28 4 41 2 10-2 18-1 28 2M43 103c16 2 26-4 38-3 11 1 19 5 31 3M43 117c12-3 24 2 36 1 13-1 23-5 35-2" stroke="#6c4534" stroke-width="3" />
+    <path d="M121 89c8-2 12 3 18 1M121 103c7 2 11-2 18-1M121 117c8-2 12 3 18 1" stroke="#6c4534" stroke-width="3" />
+
+    <path d="M35 77l9-1 1 43-8 2z" fill="url(#metal)" stroke-width="7" />
+    <path d="M105 76h10l-2 43h-10z" fill="url(#metal)" stroke-width="7" />
+    <path d="M137 76h10l-1 43h-10z" fill="url(#metal)" stroke-width="7" />
+
+    <path d="M41 88l-5 7 5 6-5 8 5 8M110 88l-5 8 6 5-5 8M142 88l-5 7 6 5-5 8 5 7" stroke-width="3.5" />
+    <path d="M42 129h105" stroke-width="7" />
+    <path d="M62 129v16M126 129v16" stroke-width="7" />
+
+    <circle cx="54" cy="139" r="24" fill="url(#metal)" stroke-width="7" />
+    <circle cx="121" cy="139" r="24" fill="url(#metal)" stroke-width="7" />
+    <circle cx="54" cy="139" r="9" fill="#f7f3ec" stroke-width="5" />
+    <circle cx="121" cy="139" r="9" fill="#f7f3ec" stroke-width="5" />
+    <circle cx="54" cy="139" r="3.5" fill="#7e7a75" stroke-width="3" />
+    <circle cx="121" cy="139" r="3.5" fill="#7e7a75" stroke-width="3" />
+
+    <path d="M54 117v10M54 151v10M32 139h10M66 139h10M39 124l7 7M62 147l7 7M39 154l7-7M62 131l7-7" stroke-width="2.7" />
+    <path d="M121 117v10M121 151v10M99 139h10M133 139h10M106 124l7 7M129 147l7 7M106 154l7-7M129 131l7-7" stroke-width="2.7" />
+    <path d="M47 126l-4 5M58 124l4 5M64 132l5 1M65 145l4 5M58 154l4-5M47 155l-4-5M40 147l-5 1M40 132l-5-1" stroke-width="2.1" />
+    <path d="M114 126l-4 5M125 124l4 5M131 132l5 1M132 145l4 5M125 154l4-5M114 155l-4-5M107 147l-5 1M107 132l-5-1" stroke-width="2.1" />
+
+    <path d="M148 130h11v15h-11z" fill="#9f7051" stroke-width="7" />
+    <path d="M151 132v14" stroke-width="3" />
+    <path d="M143 147c0-6 4-10 9-10s9 4 9 10" stroke="#7e7a75" stroke-width="6" />
+  </g>
+</svg>

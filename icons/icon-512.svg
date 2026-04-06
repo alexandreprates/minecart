@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Minecart nordico">
+  <defs>
+    <linearGradient id="bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#f7f3ed" />
+      <stop offset="100%" stop-color="#e9e0d4" />
+    </linearGradient>
+    <linearGradient id="wood" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#c8946d" />
+      <stop offset="100%" stop-color="#986547" />
+    </linearGradient>
+    <linearGradient id="metal" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8f5ef" />
+      <stop offset="100%" stop-color="#cdc4bb" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="url(#bg)" />
+  <g fill="none" stroke="#232327" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M69 406h374" stroke-width="16" />
+    <path d="M82 163h289" stroke-width="22" />
+    <path d="M208 137h96v26h-96z" fill="#9d6b4f" stroke-width="22" />
+    <path d="M370 163h71l-10 48h-74z" fill="#8a847d" stroke-width="22" />
+    <path d="M87 163l10 48h273l11-48z" fill="url(#metal)" stroke-width="22" />
+
+    <path d="M120 211h213v141H140z" fill="url(#wood)" stroke-width="18" />
+    <path d="M333 211h69v141h-69z" fill="#8c6046" stroke-width="18" />
+    <path d="M131 244c39-14 74 11 108 6 25-4 47-2 74 7M131 283c42 8 70-11 102-8 29 3 50 14 80 8M131 321c34-10 63 5 97 3 35-2 60-13 82-5" stroke="#6c4534" stroke-width="8" />
+    <path d="M339 244c19-5 31 7 47 3M339 281c18 5 29-7 47-3M339 318c19-5 31 7 47 3" stroke="#6c4534" stroke-width="8" />
+
+    <path d="M108 213l27-4 2 116-22 5z" fill="url(#metal)" stroke-width="18" />
+    <path d="M294 211h28l-5 116h-28z" fill="url(#metal)" stroke-width="18" />
+    <path d="M377 211h28l-2 116h-28z" fill="url(#metal)" stroke-width="18" />
+    <path d="M126 243l-14 20 14 16-14 22 14 20M309 243l-14 21 17 13-14 22M390 243l-14 20 17 14-14 22 13 19" stroke-width="9" />
+
+    <path d="M128 354h289" stroke-width="18" />
+    <path d="M184 354v45M355 354v45" stroke-width="18" />
+
+    <circle cx="156" cy="381" r="61" fill="url(#metal)" stroke-width="18" />
+    <circle cx="339" cy="381" r="61" fill="url(#metal)" stroke-width="18" />
+    <circle cx="156" cy="381" r="23" fill="#f7f3ec" stroke-width="12" />
+    <circle cx="339" cy="381" r="23" fill="#f7f3ec" stroke-width="12" />
+    <circle cx="156" cy="381" r="8" fill="#7e7a75" stroke-width="8" />
+    <circle cx="339" cy="381" r="8" fill="#7e7a75" stroke-width="8" />
+
+    <path d="M156 324v23M156 415v23M99 381h23M190 381h23M117 342l18 18M177 402l18 18M117 420l18-18M177 360l18-18" stroke-width="7" />
+    <path d="M339 324v23M339 415v23M282 381h23M373 381h23M300 342l18 18M360 402l18 18M300 420l18-18M360 360l18-18" stroke-width="7" />
+    <path d="M138 347l-10 12M167 343l10 12M183 362l13 3M184 395l12 12M167 418l10-12M138 420l-10-12M122 400l-13 3M122 363l-13-3" stroke-width="5" />
+    <path d="M321 347l-10 12M350 343l10 12M366 362l13 3M367 395l12 12M350 418l10-12M321 420l-10-12M305 400l-13 3M305 363l-13-3" stroke-width="5" />
+
+    <path d="M412 355h30v38h-30z" fill="#9f7051" stroke-width="18" />
+    <path d="M419 359v32" stroke-width="8" />
+    <path d="M399 394c0-16 12-29 28-29 15 0 28 13 28 29" stroke="#7e7a75" stroke-width="15" />
+  </g>
+</svg>
