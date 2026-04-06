@@ -63,9 +63,19 @@ function renderInputs() {
 
 function bindActions() {
   const handleReset = () => {
+    if (state.dailyEarnings.length >= 5) {
+      const confirmed = window.confirm("Iniciar uma nova partida? Isso vai apagar os 5 dias salvos e reiniciar o jogo.");
+      if (!confirmed) return;
+      state.dailyEarnings = [];
+      setCardsTotal(0);
+      setDayBonus(0);
+    }
+
     CRYSTALS.forEach((crystal) => setQuantity(crystal.id, 0));
     setAutunita(0);
-    setDayBonus(0);
+    if (state.dailyEarnings.length < 5) {
+      setDayBonus(0);
+    }
     state.selectedComboId = "AUTO";
     updateUI();
   };
@@ -236,6 +246,9 @@ function updateUI() {
   elements.summaryComboTotal.textContent = formatMoney(selectedCombo.finalTotal);
   elements.summaryDaysCount.textContent = `${state.dailyEarnings.length}/5`;
   elements.dayBonusInput.value = state.dayBonus;
+  const resetLabel = state.dailyEarnings.length >= 5 ? "Nova Partida" : "Zerar";
+  elements.resetBtn.textContent = resetLabel;
+  elements.mobileResetBtn.textContent = resetLabel;
   if (elements.saveDayBtn) {
     elements.saveDayBtn.disabled = state.dailyEarnings.length >= 5;
   }
